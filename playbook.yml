@@ -1,0 +1,33 @@
+- name: Instalando dependências Python do projeto fictício
+  hosts: instancia-python
+  become: yes
+  tasks:
+    - name: Instalando Python 3
+      yum: 
+        name: python3
+        state: present
+
+    - name: Instalando pip3
+      yum:
+        name: python3-pip
+        state: present
+
+    - name: Instalando virtualenv via pip
+      pip:
+        name: virtualenv
+        executable: pip3
+        
+    - name: Criando diretório para o ambiente virtual
+      file:
+        path: /home/ec2-user/diretorio-teste
+        state: directory
+        owner: ec2-user
+        group: ec2-user
+        mode: '0755'
+
+    - name: Criando ambiente virtual
+      command: virtualenv /home/ec2-user/diretorio-teste/venv
+      become_user: ec2-user
+
+
+
